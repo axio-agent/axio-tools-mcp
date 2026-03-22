@@ -4,10 +4,11 @@ from __future__ import annotations
 
 from unittest.mock import AsyncMock, MagicMock, patch
 
-from axio_tools_mcp.config import MCPServerConfig
-from axio_tools_mcp.registry import MCPRegistry
 from mcp.types import CallToolResult, TextContent
 from mcp.types import Tool as MCPTool
+
+from axio_tools_mcp.config import MCPServerConfig
+from axio_tools_mcp.registry import MCPRegistry
 
 
 def _mock_session(tools: list[MCPTool] | None = None) -> MagicMock:

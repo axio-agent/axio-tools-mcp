@@ -5,10 +5,11 @@ from __future__ import annotations
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
-from axio_tools_mcp.config import MCPServerConfig
-from axio_tools_mcp.session import MCPSession
 from mcp.types import CallToolResult, ListToolsResult, TextContent
 from mcp.types import Tool as MCPTool
+
+from axio_tools_mcp.config import MCPServerConfig
+from axio_tools_mcp.session import MCPSession
 
 
 @pytest.fixture

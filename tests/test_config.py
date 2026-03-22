@@ -1,6 +1,7 @@
 """Tests for MCPServerConfig."""
 
 import pytest
+
 from axio_tools_mcp.config import MCPServerConfig
 
 

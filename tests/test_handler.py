@@ -6,9 +6,10 @@ from typing import Any
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
+from mcp.types import CallToolResult, TextContent
+
 from axio_tools_mcp.handler import build_handler
 from axio_tools_mcp.session import MCPSession
-from mcp.types import CallToolResult, TextContent
 
 
 def _make_mock_session() -> MCPSession:
