@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, cast
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
@@ -51,15 +51,16 @@ def test_required_vs_optional() -> None:
     }
     handler_cls = build_handler("test__greet", "greet", "Greet", schema, session)
 
-    instance = handler_cls(name="Alice")
-    assert instance.name == "Alice"  # type: ignore[attr-defined]
-    assert instance.age is None or instance.age == 25  # type: ignore[attr-defined]
+    instance = cast(type[Any], handler_cls)(name="Alice")
+    assert instance.name == "Alice"
+    assert instance.age is None or instance.age == 25
 
 
 async def test_call_forwarding() -> None:
     """Handler __call__ forwards to MCP session.call_tool."""
     session = _make_mock_session()
-    session.call_tool.return_value = CallToolResult(
+    mock_call = cast(AsyncMock, session.call_tool)
+    mock_call.return_value = CallToolResult(
         content=[TextContent(type="text", text="hello world")],
         isError=False,
     )
@@ -70,17 +71,17 @@ async def test_call_forwarding() -> None:
         "required": ["message"],
     }
     handler_cls = build_handler("echo__say", "say", "Say something", schema, session)
-    instance = handler_cls(message="hi")
+    instance = cast(type[Any], handler_cls)(message="hi")
     result = await instance()
 
     assert result == "hello world"
-    session.call_tool.assert_awaited_once_with("say", {"message": "hi"})
+    mock_call.assert_awaited_once_with("say", {"message": "hi"})
 
 
 async def test_error_handling() -> None:
     """Handler raises RuntimeError when isError=True."""
     session = _make_mock_session()
-    session.call_tool.return_value = CallToolResult(
+    cast(AsyncMock, session.call_tool).return_value = CallToolResult(
         content=[TextContent(type="text", text="not found")],
         isError=True,
     )
@@ -91,7 +92,7 @@ async def test_error_handling() -> None:
         "required": ["path"],
     }
     handler_cls = build_handler("fs__read", "read", "Read file", schema, session)
-    instance = handler_cls(path="/missing")
+    instance = cast(type[Any], handler_cls)(path="/missing")
 
     with pytest.raises(RuntimeError, match="not found"):
         await instance()
@@ -100,7 +101,7 @@ async def test_error_handling() -> None:
 async def test_empty_schema() -> None:
     """Handler works with empty input schema (no params)."""
     session = _make_mock_session()
-    session.call_tool.return_value = CallToolResult(
+    cast(AsyncMock, session.call_tool).return_value = CallToolResult(
         content=[TextContent(type="text", text="done")],
         isError=False,
     )
@@ -127,10 +128,10 @@ def test_type_mapping() -> None:
         "required": ["s", "i", "n", "b", "a", "o"],
     }
     handler_cls = build_handler("test__types", "types", "Type test", schema, session)
-    instance = handler_cls(s="x", i=1, n=1.5, b=True, a=[1, 2], o={"k": "v"})
-    assert instance.s == "x"  # type: ignore[attr-defined]
-    assert instance.i == 1  # type: ignore[attr-defined]
-    assert instance.n == 1.5  # type: ignore[attr-defined]
-    assert instance.b is True  # type: ignore[attr-defined]
-    assert instance.a == [1, 2]  # type: ignore[attr-defined]
-    assert instance.o == {"k": "v"}  # type: ignore[attr-defined]
+    instance = cast(type[Any], handler_cls)(s="x", i=1, n=1.5, b=True, a=[1, 2], o={"k": "v"})
+    assert instance.s == "x"
+    assert instance.i == 1
+    assert instance.n == 1.5
+    assert instance.b is True
+    assert instance.a == [1, 2]
+    assert instance.o == {"k": "v"}
