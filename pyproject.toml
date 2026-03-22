@@ -1,15 +1,20 @@
 [project]
 name = "axio-tools-mcp"
-version = "0.2.2"
+version = "0.2.3"
 description = "MCP tools loader for Axio"
 readme = "README.md"
 requires-python = ">=3.12"
 license = {text = "MIT"}
+keywords = ["llm", "agent", "ai", "mcp", "tools", "model-context-protocol"]
 dependencies = ["axio", "mcp>=1.6"]
 
 [project.entry-points."axio.tools.settings"]
 mcp = "axio_tools_mcp.plugin:MCPPlugin"
 
+
+[project.urls]
+Homepage = "https://github.com/axio-agent/axio-tools-mcp"
+Repository = "https://github.com/axio-agent/axio-tools-mcp"
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
