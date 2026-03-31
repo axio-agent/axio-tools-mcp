@@ -1,3 +1,6 @@
+> [\!NOTE]
+> This repository has been archived. Development continues in [axio-agent/monorepo](https://github.com/axio-agent/monorepo).
+
 # axio-tools-mcp
 
 [![PyPI](https://img.shields.io/pypi/v/axio-tools-mcp)](https://pypi.org/project/axio-tools-mcp/)
